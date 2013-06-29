@@ -1,0 +1,55 @@
+/* 公共样式 */
+body {font-family:"宋体",Arial; font-size:14px; color:#4d4d4d; background:#fff;}
+body,ul,li,p,form,dl,dt,dd,h1,h2,h3,h4,h5,h6 {margin:0; padding:0;}
+td{padding:3px 0px}
+ul li {list-style:none;}
+a img {border:none;}
+a {color: #0078ff; text-decoration: none}
+a:hover {color: #0078ff; text-decoration: underline}
+a:active {color: #0078ff; text-decoration: none}
+
+/* 操作提示消息 */
+#msg{padding:5px 6px 0px 6px;display:inline-block;z-index:97;position:absolute;width:250px;height:20px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;display:none;}
+.msg-wrong{ border:1px solid #000;background-color:#C64934;color:#fff;padding:0px 3px;text-align:center;}
+.msg-ok{border:1px solid #000;background-color:#68AF02;color:#fff;padding:0px 3px;text-align:center;}
+.msg-wait{border:1px solid #000;background-color:#68AF02;color:#fff;padding:0px 3px;text-align:center;}
+
+
+.div_hr{width:100%;height:1px;border-bottom:1px solid #ccc;font-size:1px;}
+.div_su{height:30px;font-size:12px;padding-bottom:5px;padding-top:8px;}
+h2{font-size:14px;}
+
+.input-text {width:180px;height:20px;border:1px solid #bbbbbb;padding:3px;color:#4d4d4d;font-size:14px;}
+.input-pwd  {width:260px;height:20px;border:1px solid #bbbbbb;padding:3px;color:#4d4d4d;font-size:14px;}
+.input-over {background-color:#eeeeee;}
+.input-select{width:267px;height:26px;line-height:26px;border:1px solid #bbbbbb;color:#4d4d4d;font-size:14px;}
+.input-share-select{width:267px;height:22px;line-height:22px;border:1px solid #bbbbbb;color:#4d4d4d;font-size:12px;}
+.input-textarea{width:260px;height:80px;border:1px solid #bbbbbb;padding:0px 3px;color:#4d4d4d;font-size:14px;}
+.input-editText{text-align:center;border:0px;padding:0px;font-family:"宋体",Arial; font-size:12px; color:#4d4d4d; background:#fff;}
+.input-editover{text-align:center;border:1px solid #f89300;padding:0;font-family:"宋体",Arial; font-size:12px; color:#4d4d4d; background:#fff;}
+
+.img-btn{cursor:pointer;}
+.hand{cursor:pointer;}
+.label{padding-right:3px;text-align:right}
+.subTitle{padding:10px 3px;font-weight:bold}
+label {width:115px;height:20px;line-height:20px;float:left;text-align:right;padding-right:3px;}
+.left{padding-left:1px;width:510px;text-align:left;}
+#postList p {clear:left;height:30px;padding:3px 0px}
+
+.tab-list{width:100%;}
+.tab-list thead tr{background-color:#f5f5f5;height:30px!important;height:23px;}
+.tab-list thead tr span{color:#0078ff;padding:0px 0px 0px 3px;}
+.tab-list thead tr .center{text-align:center}
+.tab-list thead tr a {color: #4d4d4d; text-decoration: none}
+.tab-list thead tr a:hover {color: #4d4d4d; text-decoration: none}
+.tab-list thead tr a:active {color: #4d4d4d; text-decoration: none}
+.tab-list th,.tab-list td{border-bottom: #ccc 1px solid;border-top: #fff 1px solid; text-align:left;font-weight:normal;padding:3px 5px;}
+.tab-list tbody tr{height:30px;}
+.tab-list tbody tr .center{text-align:center}
+.tab-list tbody .app{height:55px;padding:3px;}
+.tab-list tbody .app tr{height:25px;}
+.tab-list tbody .app .icon{border:0px;width:45px;}
+.tab-list tbody .app .app_title{border:0px;text-align:left}
+.tab-list tbody .app .app_title a {color: #4d4d4d;font-size:14px;font-weight:bold;text-decoration:none}
+.tab-list tbody .app .app_title a:hover {color: #4d4d4d;font-size:14px;font-weight:bold;text-decoration: underline}
+.tab-list tbody .app .app_title a:active {color: #4d4d4d;font-size:14px;font-weight:bold;text-decoration: none}

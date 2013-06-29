@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteEngine   on
+RewriteBase     /api/1.0/pmc/
+RewriteRule     (.+)/$ index.php?api_argus=$1 [L]
