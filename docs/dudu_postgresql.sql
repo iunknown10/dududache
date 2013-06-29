@@ -356,7 +356,7 @@ ALTER TABLE dudu_driver_token
 CREATE TABLE dudu_passenger_position
 (
 	pid integer NOT NULL,
-	username char(11) NOT NULL,
+	username char(11),
 	location geometry(Point,4326),
 	alti numeric(8,3),
 	speed numeric(5,2),
@@ -379,7 +379,7 @@ CREATE INDEX p_position_pid ON dudu_passenger_position (pid);
 CREATE TABLE dudu_driver_position
 (
 	did integer NOT NULL,
-	username char(11) NOT NULL,
+	username char(11),
 	location geometry(Point,4326),
 	alti numeric(8,3),
 	speed numeric(5,2),
