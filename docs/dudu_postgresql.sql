@@ -358,6 +358,14 @@ CREATE TABLE dudu_passenger_position
 	pid integer NOT NULL,
 	username char(11) NOT NULL,
 	location geometry(Point,4326),
+	alti numeric(8,3),
+	speed numeric(5,2),
+	direction numeric(5,2),
+	accuracy smallint,
+	sate_num smallint,
+	gps_timestamp integer,
+	address varchar(128),
+	status smallint default 1 NOT NULL,
 	CONSTRAINT dudu_passenger_position_pid PRIMARY KEY (pid)
 )
 WITH (
@@ -365,6 +373,7 @@ WITH (
 );
 ALTER TABLE dudu_passenger_position
   OWNER TO dudu;
+CREATE INDEX p_position_pid ON dudu_passenger_position (pid);
   
 -- dudu_driver_position
 CREATE TABLE dudu_driver_position
@@ -372,7 +381,14 @@ CREATE TABLE dudu_driver_position
 	did integer NOT NULL,
 	username char(11) NOT NULL,
 	location geometry(Point,4326),
-	status smallint default 0 NOT NULL,
+	alti numeric(8,3),
+	speed numeric(5,2),
+	direction numeric(5,2),
+	accuracy smallint,
+	sate_num smallint,
+	gps_timestamp integer,
+	address varchar(128),
+	status smallint default 1 NOT NULL,
 	CONSTRAINT dudu_driver_position_did PRIMARY KEY (did)
 )
 WITH (
@@ -380,3 +396,4 @@ WITH (
 );
 ALTER TABLE dudu_driver_position
   OWNER TO dudu;
+CREATE INDEX d_position_did ON dudu_driver_position (did);
