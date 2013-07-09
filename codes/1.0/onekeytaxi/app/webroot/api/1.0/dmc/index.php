@@ -57,6 +57,25 @@ switch ($module){
 			require_once ('dmc_lbs_current.php');
 		}
 		break;
+	case 'taxi':
+		$action = trim($api_argus[1]);
+		if('green' == $action){
+			require_once ('dmc_taxi_green.php');
+		}else if('confirm' == $action){
+			require_once ('dmc_taxi_confirm.php');
+		}else if('yellow' == $action){
+			require_once ('dmc_taxi_yellow.php');
+		}else{
+			header('HTTP/1.0 404 Not Found');
+			exit;
+		}
+		break;
+	case 'driverresp':
+		$action = trim($api_argus[1]);
+		if('taxi' == $action){
+			require_once ('dmc_driverresp_taxi.php');
+		}
+		break;
 	default:
 		header('HTTP/1.0 404 Not Found');
 		exit;

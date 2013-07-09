@@ -162,3 +162,43 @@ function postgisToPoint($postgisPoint){
 	//reverse array, because postgis works with lng-lat, while gmaps with lat-lng
 	return $result;
 }
+/***获取每天每个订单，当天第一个订单时使用**/
+function getFirstOrderIdByType($type){
+	if($type==1){
+		return $type.'0000000001';
+	}elseif($type==2){
+		return $type.'0000000001';
+	}else{
+		return false;
+	}
+}
+/**
+ * $type :driver/passenger
+ * $token
+ * $userid:$did/$pid
+ * */
+function checkToken($type,$token,$userid){
+	if(trim($type) == ''
+		|| trim($token) == ''
+		|| trim($userid) == ''
+	){
+		return false;
+	}
+	if($type == DUDU_DRIVER){
+		$table = API_TABLE_PRE.'driver_token';
+		$conditionUseridColumn = 'did';
+	}elseif ($type == DUDU_PASSENGER){
+		$table = API_TABLE_PRE.'passenger_token';
+		$conditionUseridColumn = 'pid';
+	}else{
+		return false;
+	}
+	$sql = 'select token from '.$table.' where '.$conditionUseridColumn.' = '.$userid;
+	$rs = myDoSqlQuery($sql);
+	$tokenInfo = pg_fetch_assoc($rs);
+	if($tokenInfo['token']==$token){
+		return true;
+	}else{
+		return false;
+	}
+}

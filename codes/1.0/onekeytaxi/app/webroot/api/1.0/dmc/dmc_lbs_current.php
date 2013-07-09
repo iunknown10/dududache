@@ -8,7 +8,7 @@
  * @package   tu 
  * @author    liangji   2011-03-10 <liangjig@gmail.com> 
  * @copyright 2013-2014 dudu Inc. All rights reserved. 
- * @version   SVN: $Id: pcm_vercode.php,v 1.0 2013-06-06 22:45:11 
+ * @version   SVN: $Id: dmc_lbs_current.php,v 1.0 2013-06-06 22:45:11 
  * beijing Exp $ 
  * @link      http://www.dududache.com/ 
  */

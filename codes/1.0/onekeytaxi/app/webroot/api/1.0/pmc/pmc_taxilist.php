@@ -65,6 +65,7 @@ if (API_METHOD_GET == $_SERVER['REQUEST_METHOD']) {
 				    	'taxi_company'=> $taxiInfo['taxi_company_name'],
 				    	'taxi_lng'=> round($pointInfo[1],4),
 				    	'taxi_lat'=> round($pointInfo[2],4),
+				    	'distance'=> round($row['distance']),
 				    	);
 		}
 		responseApiOkResult(

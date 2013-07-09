@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . "/../../server.root.inc.php";
 //require_once "6yun/6yun_define.php";
 require_once "common/db_func.php";
 require_once "API/api_common_func.php";
+require_once "MemCached/Wrapper.php";
 //
 //require_once "6yun/db_func.php";
 //require_once "6yun/Ucs/ucs.resource.php";
