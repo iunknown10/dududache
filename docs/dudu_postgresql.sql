@@ -64,7 +64,7 @@ CREATE INDEX d_status ON dudu_driver (status);
 -- dudu_order_normal
 CREATE TABLE dudu_order_normal
 (
-	order_id serial NOT NULL,
+	order_id bigint NOT NULL,
 	pid integer NOT NULL,
 	did integer NOT NULL,
 	passenger_position  geometry(Point,4326),
@@ -72,12 +72,11 @@ CREATE TABLE dudu_order_normal
 	status smallint NOT NULL,
 	request_time timestamp without time zone,
 	reply_time timestamp without time zone,
-	start_point varchar(64) NOT NULL,
-	end_point varchar(64),
-	driver_leave_time timestamp without time zone,
+	start_point varchar(128) NOT NULL,
+	end_point varchar(128),
+	driver_arrived_time timestamp without time zone,
 	passenger_rided_time timestamp without time zone,
 	ride_position  geometry(Point,4326),
-	evaluate smallint DEFAULT 0 NOT NULL,
 	voice_url varchar(64),
 	CONSTRAINT order_normal_okey PRIMARY KEY (order_id)
 )
@@ -90,12 +89,11 @@ CREATE INDEX o_pid ON dudu_order_normal (pid);
 CREATE INDEX o_did ON dudu_order_normal (did);
 CREATE INDEX o_request_time ON dudu_order_normal (request_time);
 CREATE INDEX o_status ON dudu_order_normal (status);
-CREATE INDEX o_evaluate ON dudu_order_normal (evaluate);
 
 -- dudu_order_reserve
 CREATE TABLE dudu_order_reserve
 (
-	order_id serial NOT NULL,
+	order_id bigint NOT NULL,
 	pid integer NOT NULL,
 	did integer NOT NULL,
 	passenger_position  geometry(Point,4326),
@@ -105,12 +103,11 @@ CREATE TABLE dudu_order_reserve
 	reply_time timestamp without time zone,
 	use_time timestamp without time zone,
 	valid_time timestamp without time zone,
-	start_point varchar(64) NOT NULL,
-	end_point varchar(64),
-	driver_leave_time timestamp without time zone,
+	start_point varchar(128) NOT NULL,
+	end_point varchar(128),
+	driver_arrived_time timestamp without time zone,
 	passenger_rided_time timestamp without time zone,
 	ride_position  geometry(Point,4326),
-	evaluate smallint DEFAULT 0 NOT NULL,
 	voice_url varchar(64),
 	CONSTRAINT order_reserve_okey PRIMARY KEY (order_id)
 )
@@ -123,7 +120,7 @@ CREATE INDEX order_reserve__pid ON dudu_order_reserve (pid);
 CREATE INDEX order_reserve__did ON dudu_order_reserve (did);
 CREATE INDEX order_reserve__request_time ON dudu_order_reserve (request_time);
 CREATE INDEX order_reserve__status ON dudu_order_reserve (status);
-CREATE INDEX order_reserve__evaluate ON dudu_order_reserve (evaluate);
+
 
 -- dudu_passenger_order
 CREATE TABLE dudu_passenger_order
@@ -181,7 +178,7 @@ ALTER TABLE dudu_order_path
 -- dudu_order_evaluate
 CREATE TABLE dudu_order_evaluate
 (
-	order_id integer NOT NULL,
+	order_id bigint NOT NULL,
 	pid integer NOT NULL,
 	did integer NOT NULL,
 	cause smallint DEFAULT 0 NOT NULL,
@@ -356,7 +353,7 @@ ALTER TABLE dudu_driver_token
 CREATE TABLE dudu_passenger_position
 (
 	pid integer NOT NULL,
-	username char(11),
+	username char(11) NOT NULL,
 	location geometry(Point,4326),
 	alti numeric(8,3),
 	speed numeric(5,2),
@@ -379,7 +376,7 @@ CREATE INDEX p_position_pid ON dudu_passenger_position (pid);
 CREATE TABLE dudu_driver_position
 (
 	did integer NOT NULL,
-	username char(11),
+	username char(11) NOT NULL,
 	location geometry(Point,4326),
 	alti numeric(8,3),
 	speed numeric(5,2),
@@ -397,3 +394,30 @@ WITH (
 ALTER TABLE dudu_driver_position
   OWNER TO dudu;
 CREATE INDEX d_position_did ON dudu_driver_position (did);
+
+-- dudu_order_id_list  订单号列表
+CREATE TABLE dudu_order_id_list
+(
+	current_order_id bigint NOT NULL,
+	order_type smallint NOT NULL,
+	order_date date not null
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE dudu_order_id_list
+  OWNER TO dudu;
+CREATE INDEX order_type_date ON dudu_order_id_list (order_type,order_date);
+
+-- dudu_driver_status 司机状态表
+CREATE TABLE dudu_driver_status
+(
+	did integer NOT NULL,
+	status smallint default 0 NOT NULL,
+	CONSTRAINT dudu_driver_status_did PRIMARY KEY (did)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE dudu_driver_status
+  OWNER TO dudu;
