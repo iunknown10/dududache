@@ -38,26 +38,35 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
 	}
 	
 	//检查token
-	$sql = 'select token from '.API_TABLE_PRE.'driver_token where did = '.$did;
-	$rs = myDoSqlQuery($sql);
-	$tokenInfo = pg_fetch_assoc($rs);
-	if(!($tokenInfo['token']==$token)){
-		responseApiErrorResult(902, 'token error!');
+	if(!checkToken(DUDU_DRIVER,$token,$did)){
+		responseApiErrorResult(902, 'token verify error!');
         exit();
 	}
 	
 	//打绿车回复
 	if($taxiType==DUDU_TAXI_GREEN){
 		$taxiType = ORDER_TYPE_GREEN;
+		//查询当前司机是否有statu为0的订单，即没有答复和订单
+		$sql = 'select did,pid,status from '.API_TABLE_PRE.'order_normal where status=0 and  order_id='.$orderId;
+		$rs = myDoSqlQuery($sql);
+		$row = pg_fetch_assoc($rs);
+		//如果没有，则此为重复请求
+		if(empty($row['did'])){
+			responseApiErrorResult(null, 'repeat error!');
+	        exit();
+		}
+		//判断did与订单号是否相符
+		if($did !=$row['did']){
+			responseApiErrorResult(901, 'para error!');
+	        exit();
+		}
+			
 		//如果司机去
 		if($replied == 1){
 			$sql = 'update '.API_TABLE_PRE.'order_normal set status=1,reply_time=now() where order_id='.$orderId;
 			myDoSqlQuery($sql);
 			
 		}elseif ($replied == 2){//如果司机不去
-			$sql = 'select pid,status from '.API_TABLE_PRE.'order_normal where order_id='.$orderId;
-			$rs = myDoSqlQuery($sql);
-			$row = pg_fetch_assoc($rs);
 			if($row['status'] == 2){
 				responseApiErrorResult(null, 'repeat error!');
 		        exit();

@@ -24,13 +24,12 @@ if (API_METHOD_GET == $_SERVER['REQUEST_METHOD']) {
 		responseApiErrorResult(901, 'para error!');
         exit();
 	}
-	$sql = 'select token from '.API_TABLE_PRE.'driver_token where did = '.$did;
-	$rs = myDoSqlQuery($sql);
-	$tokenInfo = pg_fetch_assoc($rs);
-	if(!($tokenInfo['token']==$token)){
-		responseApiErrorResult(902, 'para error!');
+	//检查token
+	if(!checkToken(DUDU_DRIVER,$token,$did)){
+		responseApiErrorResult(902, 'token verify error!');
         exit();
 	}
+	
 	$sql = 'select order_id,pid,ST_AsText(passenger_position)  as point_info,start_point from '.API_TABLE_PRE.'order_normal where did='.$did.' and status=0';
    	$rs = myDoSqlQuery($sql);
    	$row = pg_fetch_assoc($rs);

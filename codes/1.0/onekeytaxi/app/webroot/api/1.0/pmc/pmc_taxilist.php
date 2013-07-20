@@ -19,24 +19,24 @@ if (API_METHOD_GET == $_SERVER['REQUEST_METHOD']) {
     $userLocationLng = trim($api_argus[2]);
     $userLocationLat = trim($api_argus[3]);
     $distince = trim($api_argus[4]);
-    if (empty($pid) && empty($userLocationLng) && empty($userLocationLat)) {
-        responseApiErrorResult(901, 'para empty error!');
-        exit();
-    }
     $distince = $distince? $distince:20000;
     $token = $_COOKIE['token'];
-    if(empty($token)){
-    	responseApiErrorResult(901, 'token empty error!');
+
+    
+    if(trim($pid) == ''
+		|| trim($userLocationLng) == ''
+		|| trim($userLocationLat) == ''
+		|| trim($token) == ''
+	){
+		responseApiErrorResult(901, 'para error!');
         exit();
-    }
+	}
+    
     //检查token
-    $sql = 'select token from '.API_TABLE_PRE.'passenger_token where pid='.$pid;
-    $rs = myDoSqlQuery($sql);
-    $result = pg_fetch_assoc($rs);
-    if($result['token'] != $token){
-    	responseApiErrorResult(902, 'token verify error!');
+	if(!checkToken(DUDU_PASSENGER,$token,$pid)){
+		responseApiErrorResult(902, 'token verify error!');
         exit();
-    }
+	}
     //判断现有表中是否存在
     $sql = 'select username from '.API_TABLE_PRE.'passenger_position where pid='.$pid;
     $rs = myDoSqlQuery($sql);

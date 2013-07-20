@@ -18,14 +18,21 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
 	$lat = safeReqChrStr('lat');
 	$lng = safeReqChrStr('lng');
 	$address = safeReqChrStr('address');
+	$token = $_COOKIE['token'];
 	//判断都不准为空
 	if(trim($did) == ''
 		|| trim($pid) == ''
 		|| trim($lat) == ''
 		|| trim($lng) == ''
 		|| trim($address) == ''
+		|| trim($token) == ''
 	){
-		responseApiErrorResult(201, 'para error!');
+		responseApiErrorResult(901, 'para error!');
+        exit();
+	}
+	//检查token
+	if(!checkToken(DUDU_PASSENGER,$token,$pid)){
+		responseApiErrorResult(902, 'token verify error!');
         exit();
 	}
 	$sql = 'select status from '.API_TABLE_PRE.'driver_status where did='.$did;
@@ -61,10 +68,10 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
         	$sql = 'update '.API_TABLE_PRE.'passenger_order set all_num=all_num+1 where pid = '.$pid;
 
         	$rs = myDoSqlQuery($sql);
-        	$update_status = pg_affected_rows($rs);
+        	$updateStatus = pg_affected_rows($rs);
 
         	//如果未更新成功，说明没有记录，则插入一条
-        	if(!$update_status){
+        	if(!$updateStatus){
         		$sql ='insert into '.API_TABLE_PRE.'passenger_order (pid,all_num) values('.$pid.',1)';
         		myDoSqlQuery($sql);
         	}

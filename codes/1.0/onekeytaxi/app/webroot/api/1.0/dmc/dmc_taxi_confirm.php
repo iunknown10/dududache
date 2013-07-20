@@ -1,65 +1,63 @@
 <?php
 /** 
- * pmc确认打车成功
+ * dmc5.1.8	DMC确认乘客上车
  * 
  * PHP version 5 
  * 
- * @category  DUDU-BBS-PMC 
+ * @category  DUDU-BBS-DMC 
  * @package   tu 
  * @author    liangji   2011-03-10 <liangjig@gmail.com> 
  * @copyright 2013-2014 dudu Inc. All rights reserved. 
- * @version   SVN: $Id: pmc_taxi_confirm.php,v 1.0 2013-05-26 10:56:11 
+ * @version   SVN: $Id: dmc_taxi_confirm.php,v 1.0 2013-06-06 22:45:11 
  * beijing Exp $ 
  * @link      http://www.dududache.com/ 
  */
 
 if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
-	$did = safeReqChrStr('did');
-	$pid = safeReqChrStr('pid');
-	$orderId = safeReqChrStr('order_id');
-	$taxiType = safeReqChrStr('taxi_type');
-	$lat = safeReqChrStr('ride_lat');
-	$lng = safeReqChrStr('ride_lng');
-	$token = $_COOKIE['token'];
-	//判断都不准为空
-	if(trim($did) == ''
-		|| trim($pid) == ''
-		|| trim($lat) == ''
-		|| trim($lng) == ''
+    $token = $_COOKIE['token'];
+    
+    $orderId = safeReqChrStr('order_id');
+    $did = safeReqChrStr('did');
+    $taxiType = safeReqChrStr('taxi_type');
+
+    
+    //判断非空
+    if(trim($token) == ''
 		|| trim($orderId) == ''
+		|| trim($did) == ''
 		|| trim($taxiType) == ''
-		|| trim($token) == ''
 	){
 		responseApiErrorResult(901, 'para error!');
         exit();
 	}
-	//检查token
-	if(!checkToken(DUDU_PASSENGER,$token,$pid)){
+    //检查token
+	if(!checkToken(DUDU_DRIVER,$token,$did)){
 		responseApiErrorResult(902, 'token verify error!');
         exit();
 	}
-	
 	//我已经上车
 	if($taxiType==DUDU_TAXI_GREEN){
 		$taxiType = ORDER_TYPE_GREEN;
 		//查询当前司机是否有statu为0的订单，即没有答复和订单
-		$sql = 'select pid,status from '.API_TABLE_PRE.'order_normal where status=5 and order_id='.$orderId;
+		$sql = 'select did,status from '.API_TABLE_PRE.'order_normal where status=6 and order_id='.$orderId;
 		$rs = myDoSqlQuery($sql);
 		$row = pg_fetch_assoc($rs);
 		//如果没有，则此为重复请求
-		if(empty($row['pid'])){
+		if(empty($row['did'])){
 			responseApiErrorResult(null, 'not order error!');
 	        exit();
 		}
 		//判断did与订单号是否相符
-		if($pid !=$row['pid']){
+		if($did !=$row['did']){
 			responseApiErrorResult(901, 'para error!');
 	        exit();
 		}
-		$sql = 'update '.API_TABLE_PRE.'order_normal set ride_position=ST_GeomFromText(\'POINT('.$lng.' '.$lat.')\', '.COORDINATE_SYSTEM.'),passenger_rided_time=now(),status=6 where order_id='.$orderId;
+		$sql = 'update '.API_TABLE_PRE.'order_normal set status=7 where order_id='.$orderId;
 		myDoSqlQuery($sql);
 		responseApiOkResult();
 		
 	
 	}
+    
 }
+?>

@@ -76,6 +76,18 @@ switch ($module){
 			require_once ('dmc_driverresp_taxi.php');
 		}
 		break;
+	case 'driver':
+		$action = trim($api_argus[1]);
+		if('arrvied' == $action){
+			require_once ('dmc_driver_arrvied.php');
+		}
+		break;
+	case 'passenger':
+		$action = trim($api_argus[1]);
+		if('evaluate' == $action){
+			require_once ('dmc_passenger_evaluate.php');
+		}
+		break;
 	default:
 		header('HTTP/1.0 404 Not Found');
 		exit;

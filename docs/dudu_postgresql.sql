@@ -164,7 +164,7 @@ CREATE INDEX m_num ON dudu_driver_order (m_num);
 -- dudu_order_path
 CREATE TABLE dudu_order_path
 (
-	order_id integer NOT NULL,
+	order_id bigint NOT NULL,
 	path_info text,
 	CONSTRAINT order_path_dkey PRIMARY KEY (order_id)
 )
@@ -395,7 +395,7 @@ ALTER TABLE dudu_driver_position
   OWNER TO dudu;
 CREATE INDEX d_position_did ON dudu_driver_position (did);
 
--- dudu_order_id_list  ¶©µ¥ºÅÁĞ±í
+-- dudu_order_id_list  è®¢å•å·åˆ—è¡¨
 CREATE TABLE dudu_order_id_list
 (
 	current_order_id bigint NOT NULL,
@@ -409,7 +409,7 @@ ALTER TABLE dudu_order_id_list
   OWNER TO dudu;
 CREATE INDEX order_type_date ON dudu_order_id_list (order_type,order_date);
 
--- dudu_driver_status Ë¾»ú×´Ì¬±í
+-- dudu_driver_status å¸æœºçŠ¶æ€è¡¨
 CREATE TABLE dudu_driver_status
 (
 	did integer NOT NULL,
@@ -421,3 +421,6 @@ WITH (
 );
 ALTER TABLE dudu_driver_status
   OWNER TO dudu;
+  
+ALTER TABLE dudu_driver_position add column update_time integer;
+ALTER TABLE dudu_order_evaluate add column ctime timestamp without time zone;

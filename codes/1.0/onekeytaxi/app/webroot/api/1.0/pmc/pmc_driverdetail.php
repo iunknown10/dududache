@@ -17,23 +17,21 @@ if (API_METHOD_GET == $_SERVER['REQUEST_METHOD']) {
     //判断手机号
     $pid = trim($api_argus[1]);
     $did = trim($api_argus[2]);
-    if(empty($pid) || empty($did)){
-    	responseApiErrorResult(901, 'Invalid passenger id!');
-        exit();
-    }
     $token = $_COOKIE['token'];
-    if(empty($token)){
-    	responseApiErrorResult(901, 'token empty error!');
+    
+    if(trim($did) == ''
+		|| trim($pid) == ''
+		|| trim($token) == ''
+	){
+		responseApiErrorResult(901, 'para error!');
         exit();
-    }
+	}
+
     //检查token
-    $sql = 'select token from '.API_TABLE_PRE.'passenger_token where pid='.$pid;
-    $rs = myDoSqlQuery($sql);
-    $result = pg_fetch_assoc($rs);
-    if($result['token'] != $token){
-    	responseApiErrorResult(902, 'token verify error!');
+	if(!checkToken(DUDU_PASSENGER,$token,$pid)){
+		responseApiErrorResult(902, 'token verify error!');
         exit();
-    }
+	}
     
     //查询司机昵称及公司
     $sql = 'select d.did,d.nickname,d.car_number,t.taxi_company_name from '.API_TABLE_PRE.'driver d,'.API_TABLE_PRE.'taxi_company t where d.did='.$did.' and d.taxi_company_id=t.taxi_company_id';
