@@ -60,6 +60,24 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
 		myDoSqlQuery($sql);
 		responseApiOkResult();
 		
-	
+	}elseif($taxiType==DUDU_TAXI_YELLOW){
+		$taxiType = DUDU_TAXI_YELLOW;
+		//查询当前司机是否有statu为0的订单，即没有答复和订单
+		$sql = 'select pid,status from '.API_TABLE_PRE.'order_reserve where status=5 and order_id='.$orderId;
+		$rs = myDoSqlQuery($sql);
+		$row = pg_fetch_assoc($rs);
+		//如果没有，则此为重复请求
+		if(empty($row['pid'])){
+			responseApiErrorResult(null, 'not order error!');
+	        exit();
+		}
+		//判断did与订单号是否相符
+		if($pid !=$row['pid']){
+			responseApiErrorResult(901, 'para error!');
+	        exit();
+		}
+		$sql = 'update '.API_TABLE_PRE.'order_reserve set ride_position=ST_GeomFromText(\'POINT('.$lng.' '.$lat.')\', '.COORDINATE_SYSTEM.'),passenger_rided_time=now(),status=6 where order_id='.$orderId;
+		myDoSqlQuery($sql);
+		responseApiOkResult();
 	}
 }

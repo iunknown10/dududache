@@ -80,8 +80,8 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
 	$photoTaxiPath = API_DMC_PHOTO_PATH.$photoTaxiName;
 	move_uploaded_file($photoTaxi,$photoTaxiPath);
 	
-	$photoDrivingUrl = '/driver_photo/API_DMC/photo/'.$photoDrivingName;
-	$photoTaxiUrl = '/driver_photo/API_DMC/photo/'.$photoTaxiName;
+	$photoDrivingUrl = '/user_upload/API_DMC/photo/'.$photoDrivingName;
+	$photoTaxiUrl = '/user_upload/API_DMC/photo/'.$photoTaxiName;
 	$photoInfo['photoDriving'] = $photoDrivingUrl;
 	$photoInfo['photoTaxi'] = $photoTaxiUrl;
 	$more_info  = json_encode($photoInfo);

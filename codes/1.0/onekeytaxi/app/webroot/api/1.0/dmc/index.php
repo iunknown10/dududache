@@ -65,6 +65,8 @@ switch ($module){
 			require_once ('dmc_taxi_confirm.php');
 		}else if('yellow' == $action){
 			require_once ('dmc_taxi_yellow.php');
+		}else if('changestatus' == $action){
+		require_once ('dmc_taxi_changestatus.php');
 		}else{
 			header('HTTP/1.0 404 Not Found');
 			exit;

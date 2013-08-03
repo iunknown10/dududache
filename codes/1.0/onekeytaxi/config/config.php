@@ -34,6 +34,9 @@ define('DUDU_PASSENGER','passenger');//乘客
 define('DUDU_DRIVER','driver');//司机
 
 
+define('DUDU_YELLOW_DISTANCE',300000);//约车默认公里数,米
+
+
 
 //相关站点域名设置
 define('PLUS_SITE_ROOT_URL', HTTP_TRANS_PROTOCOL.THIS_SITE_DOMAIN.'/');

@@ -1,6 +1,6 @@
 <?php
 /** 
- * dmc获取手机验证码
+ * dmc获取打绿车请求
  * 
  * PHP version 5 
  * 

@@ -59,6 +59,7 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
         .' \''.intval($accuracy).'\',\''.intval($sateNum).'\','.intval($gpsTime).',\''.mysql_real_escape_string($address).'\','.time().');';
         $rs = myDoSqlQuery($sql);
         $insertStatus = pg_affected_rows($rs);
+        var_dump($insertStatus);
     if($insertStatus){
     	//查看是否有订单
     	$sql = 'select order_id from '.API_TABLE_PRE.'order_normal where status=1 and did='.$did;

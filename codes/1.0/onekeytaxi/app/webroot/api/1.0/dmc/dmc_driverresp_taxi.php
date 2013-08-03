@@ -20,6 +20,8 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
     $did = safeReqChrStr('did');
     $taxiType = safeReqChrStr('taxi_type');
     $replied = safeReqChrStr('replied');
+    $lng = safeReqChrStr('lng');
+    $lat = safeReqChrStr('lat');
 
      //判断非空
     if(trim($token) == ''
@@ -89,9 +91,42 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
         	myDoSqlQuery($sql);
         	
 		}
-		responseApiOkResult();
+		responseApiOkResult(array('status'=>1));
 	}elseif ($taxiType==DUDU_TAXI_YELLOW){
+		//打黄车司机必须上传应单时经纬度
+		//判断非空
+	    if(trim($lng) == ''
+			|| trim($lat) == ''
+		){
+			responseApiErrorResult(901, 'para error!');
+	        exit();
+		}
 		$taxiType = ORDER_TYPE_YELLOW;
+		//查询当前司机是否有statu为0的订单，即没有答复和订单
+		$sql = 'select pid,status from '.API_TABLE_PRE.'order_reserve where status=0 and  order_id='.$orderId;
+		$rs = myDoSqlQuery($sql);
+		$row = pg_fetch_assoc($rs);
+		//如果没有，则已经被别人应单
+		if(empty($row['pid'])){
+			responseApiOkResult(array('status'=>2));
+	        exit();
+		}
+		//更新订单中司机信息
+		$sql = 'update '.API_TABLE_PRE.'order_reserve set did='.$did.',driver_position=ST_GeomFromText(\'POINT('.$lng.' '.$lat.')\', '.COORDINATE_SYSTEM.'),reply_time=now(),status=1 where order_id='.$orderId;
+		$updateStatus = myDoSqlQuery($sql);
+		if($updateStatus){
+			
+			//更新司机订单统计表
+			$sql = 'update '.API_TABLE_PRE.'driver_order set all_num=all_num+1 where did = '.$did;
+        	myDoSqlQuery($sql);
+        	
+        	
+        	//接口返回
+			responseApiOkResult(array('status'=>1));
+		}else{
+			responseApiErrorResult(null,'add error');
+		}
+		
 	}
 	
 	

@@ -49,7 +49,32 @@ if (API_METHOD_POST == $_SERVER['REQUEST_METHOD']) {
 		    $row = pg_fetch_assoc($rs);
 		    if($row['pid'] == $pid && $row['did'] == $did){
 		    	//订单评价表增加记录
-				$sql = 'insert into '.API_TABLE_PRE.'order_evaluate (order_id,pid,did,cause,taxi_type) values('.$orderId.','.$pid.','.$did.','.$cause.','.ORDER_TYPE_GREEN.')';
+				$sql = 'insert into '.API_TABLE_PRE.'order_evaluate (order_id,pid,did,cause,taxi_type,ctime) values('.$orderId.','.$pid.','.$did.','.$cause.','.ORDER_TYPE_GREEN.',now())';
+				myDoSqlQuery($sql);
+				//更新司机订单统计表
+				$sql = 'update '.API_TABLE_PRE.'driver_order set fail_num=fail_num+1 where did = '.$did;
+	        	myDoSqlQuery($sql);
+	        	//更新乘客订单统计表
+				$sql = 'update '.API_TABLE_PRE.'passenger_order set broke_num=broke_num+1 where pid = '.$pid;
+	        	myDoSqlQuery($sql);
+		    }else{
+		    	responseApiErrorResult(902, 'did verify error!');
+		        exit();
+		    }
+		}else{
+			responseApiErrorResult(null, 'error!');
+	        exit();
+		}
+		responseApiOkResult();
+	}elseif(DUDU_TAXI_YELLOW == $taxiType){
+		//如果司机同意了，但未来接乘客
+		if(6 == $cause){
+			$sql = 'select pid,did from '.API_TABLE_PRE.'order_reserve where status=5 and  order_id='.$orderId;
+			$rs = myDoSqlQuery($sql);
+		    $row = pg_fetch_assoc($rs);
+		    if($row['pid'] == $pid && $row['did'] == $did){
+		    	//订单评价表增加记录
+				$sql = 'insert into '.API_TABLE_PRE.'order_evaluate (order_id,pid,did,cause,taxi_type,ctime) values('.$orderId.','.$pid.','.$did.','.$cause.','.ORDER_TYPE_GREEN.',now())';
 				myDoSqlQuery($sql);
 				//更新司机订单统计表
 				$sql = 'update '.API_TABLE_PRE.'driver_order set fail_num=fail_num+1 where did = '.$did;
