@@ -424,3 +424,6 @@ ALTER TABLE dudu_driver_status
   
 ALTER TABLE dudu_driver_position add column update_time integer;
 ALTER TABLE dudu_order_evaluate add column ctime timestamp without time zone;
+ALTER TABLE dudu_order_reserve add column tip smallint;
+ALTER TABLE dudu_order_reserve add column start_position  geometry(Point,4326);
+ALTER TABLE dudu_order_reserve add column end_position  geometry(Point,4326);
