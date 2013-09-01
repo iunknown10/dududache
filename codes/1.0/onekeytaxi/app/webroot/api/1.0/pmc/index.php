@@ -83,6 +83,15 @@ switch ($module){
 	case 'compliant':
 		require_once ('pmc_compliant.php');
 		break;
+	case 'check':
+		$action = trim($api_argus[1]);
+		if('reg' == $action){
+			require_once ('pmc_check_reg.php');
+		}else{
+			header('HTTP/1.0 404 Not Found');
+			exit;
+		}
+		break;
 	default:
 		header('HTTP/1.0 404 Not Found');
 		exit;

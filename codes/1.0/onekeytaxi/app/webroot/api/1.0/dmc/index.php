@@ -90,6 +90,15 @@ switch ($module){
 			require_once ('dmc_passenger_evaluate.php');
 		}
 		break;
+	case 'check':
+		$action = trim($api_argus[1]);
+		if('reg' == $action){
+			require_once ('dmc_check_reg.php');
+		}else{
+			header('HTTP/1.0 404 Not Found');
+			exit;
+		}
+		break;
 	default:
 		header('HTTP/1.0 404 Not Found');
 		exit;
